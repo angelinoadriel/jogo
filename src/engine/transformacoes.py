@@ -64,8 +64,8 @@ def aplica_transformacao(M, pontos):
         novos_pontos.append((x_novo, y_novo))
     return novos_pontos
 
+# aplica rotação alfa à matriz de transformação C (rotaciona em torno da posição atual).
 def rotacionar(C, alfa):
-    # aplica rotação alfa à matriz de transformação C (rotaciona em torno da posição atual).
     
     R = rotacao(alfa)
 

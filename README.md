@@ -34,6 +34,6 @@ O jogo possui três níveis de dificuldade configuráveis no Menu Inicial:
 
 | Dificuldade | 👕 Vidas (Camisas) | 📄 Meta de Pastas | 🦅 Frequência & Queda |
 | :--- | :---: | :---: | :--- |
-| **🟢 Fácil (Estagiário)** | **5** | **30%** do total | Queda lenta dos papéis e poucos pombos na tela. |
+| **🟢 Fácil (Estagiário)** | **5** | **30%** do total | Queda lenta dos papéis e poucos cocos na tela. |
 | **🟡 Normal (Profissional)**| **3** | **50%** do total | Velocidade moderada e padrão equilibrado de projéteis. |
 | **🔴 Difícil (CEO em Crise)**| **1** | **70%** do total | Papéis caem rápido e bombardeio pesado de pombos. Zero margem para erro! |

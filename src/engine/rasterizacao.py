@@ -1,18 +1,18 @@
+import pygame
 
-
+# desenha um pixel com verificação de limites
 def setPixel(superficie, x, y, color):
-    # desenha um pixel com verificação de limites
     x = int(x)
     y = int(y)
     if 0 <= x < superficie.get_width() and 0 <= y < superficie.get_height():
         superficie.set_at((x, y), color)
 
+
 #==============================================
 # Reta
 #==============================================
 def bresenham(superficie, x0, y0, x1, y1, cor):
-    # BRESENHAM -> algoritmo de reta
-    
+
     x0, y0, x1, y1 = int(x0), int(y0), int(x1), int(y1)
 
     inclinada = abs(y1 -y0) > abs(x1 - x0)  # calcula se a reta é íngreme ou mais horizontal
@@ -50,6 +50,7 @@ def bresenham(superficie, x0, y0, x1, y1, cor):
 def desenhar_linha(superficie, x0, y0, x1, y1, cor):
     bresenham(superficie, x0, y0, x1, y1, cor)
 
+
 #==============================================
 # Círculo
 #==============================================
@@ -85,6 +86,7 @@ def desenhar_circulo(superficie, xc, yc, r, cor):
             d += 2 * (x - y) + 1
 
         desenhar_octantes(xc, yc, x, y, cor)
+
 
 #==============================================
 # Elipse
@@ -144,10 +146,12 @@ def desenhar_elipse(superficie, xc, yc, rx, ry, cor):
             dx += 2 * (ry ** 2)
             d2 += dx - dy + (rx ** 2)
 
+
 #==============================================
 # Flood fill
 #==============================================
 def flood_fill(superficie, x_inicio, y_inicio, cor_preenchimento):
+    
     x_inicio = int(x_inicio)
     y_inicio = int(y_inicio)
 
@@ -178,11 +182,13 @@ def flood_fill(superficie, x_inicio, y_inicio, cor_preenchimento):
                 pilha.append((x, y + 1))
                 pilha.append((x, y - 1))
 
+
 #==============================================
 # Scanline
 #==============================================
+
+# preenchimento scanline para polígonos com uma única cor
 def scanline_fill(superficie, pontos, cor):
-    # preenchimento scanline para polígonos com uma única cor
     
     if len(pontos) < 3:     # um polígono tem no mínimo três pontos
         return
@@ -227,82 +233,6 @@ def scanline_fill(superficie, pontos, cor):
                 # encontrou esquerda, encontrou direita, então preenche todos os pontos entre elas
                 for x in range(x_inicio, x_fim + 1):
                     setPixel(superficie, x, y, cor)
-
-def scanline_textura(superficie, vertices_texturizados, imagem_textura):
-
-    if len(vertices_texturizados) < 3:  # um polígono precisa ter no mínimo três vértices
-        return
-
-    # pega o tamanho da textura
-    largura_tex = imagem_textura.get_width()
-    altura_tex = imagem_textura.get_height()
-
-
-    ys = [p[0][1] for p in vertices_texturizados]  # pega todos os y dos pontos
-    y_min = max(0, int(min(ys)))
-    y_max = min(superficie.get_height() - 1, int(max(ys)))
-
-    n = len(vertices_texturizados)
-
-    for y in range(y_min, y_max + 1):       # percorre o y mínimo até o máximo
-
-        intersecoes = []   # guardar os valores de x, onde o scanline cruza as bordas e também o (u,v) naquele ponto
-
-        for i in range(n):      # percorre as arestas
-
-            (x0, y0), (u0, v0) = vertices_texturizados[i]
-            (x1, y1), (u1, v1) = vertices_texturizados[(i + 1) % n]    # precisa do operador resto, para fecharmos o polígono
-
-            if y0 == y1:    # ignora aresta horizontal
-                continue
-
-            if y0 > y1:     # # organiza a ordem da aresta para facilitar cálculo
-                x0, y0, x1, y1 = x1, y1, x0, y0
-                u0, v0, u1, v1 = u1, v1, u0, v0
-
-            if y < y0 or y >= y1:   # # se a scanline cruza a aresta
-                continue
-
-            # o parâmetro t -> quanto avançamos do ponto inicial até o ponto final da aresta.
-            t = (y - y0) / (y1 - y0)
-            # encontra o x da interseção
-            x = x0 + t * (x1 - x0)
-            # Interpolação de UV na aresta
-            u = u0 + t * (u1 - u0)
-            v = v0 + t * (v1 - v0)
-            
-            intersecoes.append((x, u, v))     # guardamos a interseção
-
-        intersecoes.sort(key=lambda item: item[0])      # ordena pela coordenada x
-
-        for i in range(0, len(intersecoes), 2):     # percorre as interseções em pares
-            if i + 1 < len(intersecoes):    # garante que existe um segundo elemento
-
-                # pega o início e o fim 
-                x_inicio, u_inicio, v_inicio = intersecoes[i]
-                x_fim, u_fim, v_fim = intersecoes[i + 1]
-                xi = int(x_inicio)
-                xf = int(x_fim)
-
-                largura_segmento = x_fim - x_inicio    # distância horizontal entre as duas interseções
-
-                for x in range(xi, xf + 1):
-                    t_x = 0.0 if largura_segmento == 0 else (x - x_inicio) / largura_segmento
-                    u_pixel = u_inicio + t_x * (u_fim - u_inicio)
-                    v_pixel = v_inicio + t_x* (v_fim - v_inicio)
-
-                    # Mapeia (u, v) normalizados para os pixels reais da textura
-                    tx = max(0, min(largura_tex - 1, int(u_pixel * (largura_tex - 1))))
-                    ty = max(0, min(altura_tex - 1, int(v_pixel * (altura_tex - 1))))
-
-                    rgba = imagem_textura.get_at((tx, ty))
-
-                    # Se o pixel for transparente (Alpha < 128), pula sem desenhar no framebuffer
-                    if len(rgba) > 3 and rgba[3] < 128:
-                        continue
-
-                    cor_pixel = rgba[:3]
-                    setPixel(superficie, x, y, cor_pixel)
 
 # Função auxiliar de interpolação
 def interpolaCor(cor1, cor2, t):
@@ -368,7 +298,82 @@ def scanline_fill_gradiente(superficie, pontos_com_cor):
                     cor_pixel = interpolaCor(cor_inicio, cor_fim, t_x)
                     setPixel(superficie, x, y, cor_pixel)
 
+def scanline_textura(superficie, vertices_texturizados, imagem_textura):
+    if len(vertices_texturizados) < 3:
+        return
 
+    largura_tex = imagem_textura.get_width()
+    altura_tex = imagem_textura.get_height()
+    w_sup = superficie.get_width()
+    h_sup = superficie.get_height()
+
+    ys = [p[0][1] for p in vertices_texturizados]
+    y_min = max(0, int(min(ys)))
+    y_max = min(h_sup - 1, int(max(ys)))
+
+    n = len(vertices_texturizados)
+
+    # Acesso direto à matriz de pixels da imagem e da tela (Permitido pelo edital)
+    px_dst = pygame.PixelArray(superficie)
+    px_src = pygame.PixelArray(imagem_textura)
+
+    for y in range(y_min, y_max + 1):
+        intersecoes = []
+        for i in range(n):
+            (x0, y0), (u0, v0) = vertices_texturizados[i]
+            (x1, y1), (u1, v1) = vertices_texturizados[(i + 1) % n]
+
+            if y0 == y1:
+                continue
+            if y0 > y1:
+                x0, y0, x1, y1 = x1, y1, x0, y0
+                u0, v0, u1, v1 = u1, v1, u0, v0
+
+            if y < y0 or y >= y1:
+                continue
+
+            t = (y - y0) / (y1 - y0)
+            x = x0 + t * (x1 - x0)
+            u = u0 + t * (u1 - u0)
+            v = v0 + t * (v1 - v0)
+            intersecoes.append((x, u, v))
+
+        intersecoes.sort(key=lambda item: item[0])
+
+        for i in range(0, len(intersecoes), 2):
+            if i + 1 < len(intersecoes):
+                x_inicio, u_inicio, v_inicio = intersecoes[i]
+                x_fim, u_fim, v_fim = intersecoes[i + 1]
+
+                xi = max(0, int(x_inicio))
+                xf = min(w_sup - 1, int(x_fim))
+
+                largura_segmento = x_fim - x_inicio
+                if largura_segmento <= 0:
+                    continue
+
+                inv_largura = 1.0 / largura_segmento
+
+                for x in range(xi, xf + 1):
+                    t_x = (x - x_inicio) * inv_largura
+                    u_pixel = u_inicio + t_x * (u_fim - u_inicio)
+                    v_pixel = v_inicio + t_x * (v_fim - v_inicio)
+
+                    tx = int(u_pixel * (largura_tex - 1))
+                    ty = int(v_pixel * (altura_tex - 1))
+
+                    # Mantém as coordenadas dentro da textura
+                    if tx < 0: tx = 0
+                    elif tx >= largura_tex: tx = largura_tex - 1
+                    if ty < 0: ty = 0
+                    elif ty >= altura_tex: ty = altura_tex - 1
+
+                    # Atribuição direta de pixel via matriz em memória
+                    px_dst[x, y] = px_src[tx, ty]
+
+    # Libera o bloqueio das superfícies na memória
+    del px_dst
+    del px_src
 
 #==============================================
 # Desenhar polígono
@@ -381,8 +386,8 @@ def desenhar_poligono(superficie, pontos, cor):
         x1, y1 = pontos[(i + 1) % n]
         bresenham(superficie,x0, y0,x1, y1,cor)
 
+# passa um retângulo para vértices de um polígono
 def retangulo_para_poligono(x, y, largura, altura):
-    # passa um retângulo para vértices de um polígono
     return [
         (x, y),
         (x + largura, y),
