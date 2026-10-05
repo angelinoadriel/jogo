@@ -1,10 +1,9 @@
 from engine.transformacoes import translacao, escala, multiplica_matrizes
 
 def matriz_mundo_para_viewport(window, viewport):
-
     xw_min, yw_min, xw_max, yw_max = window
     xv_min, yv_min, xv_max, yv_max = viewport
-
+    
     sx = (xv_max - xv_min) / (xw_max - xw_min)
     sy = (yv_max - yv_min) / (yw_max - yw_min)
 

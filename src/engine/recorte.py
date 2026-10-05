@@ -6,7 +6,6 @@ INFERIOR = 4 # 0100
 SUPERIOR = 8 # 1000
 
 def _calcular_codigo_regiao(x, y, x_min, y_min, x_max, y_max):
-
     codigo = DENTRO
     if x < x_min:
         codigo |= ESQUERDA
@@ -21,7 +20,6 @@ def _calcular_codigo_regiao(x, y, x_min, y_min, x_max, y_max):
     return codigo
 
 def cohen_sutherland(x0, y0, x1, y1, x_min, y_min, x_max, y_max):
-
     # calculo o outcode dos dois pontos
     codigo0 = _calcular_codigo_regiao(x0, y0, x_min, y_min, x_max, y_max)
     codigo1 = _calcular_codigo_regiao(x1, y1, x_min, y_min, x_max, y_max)

@@ -1,8 +1,6 @@
 import pygame
 from game.estados import EstadoMenu
 
-
-
 class Jogo:
     
     # construtor
@@ -10,6 +8,7 @@ class Jogo:
         pygame.init()                                                   # inicializa o pygame
         self.largura = largura
         self.altura = altura
+        
         self.tela = pygame.display.set_mode((self.largura, self.altura))    # cria a tela
         pygame.display.set_caption("Desastre no NC2A")                      # título da janela
         
@@ -19,20 +18,15 @@ class Jogo:
         # Variáveis globais de configuração
         self.dificuldade_atual = 2                          # 1: Fácil, 2: Normal, 3: Difícil
         self.estado_atual = EstadoMenu(self)                # Inicia no estado de Menu
-
     
     def mudar_estado(self, novo_estado):
         self.estado_atual = novo_estado
 
-
     def executar(self):
-        while self.rodando:
-            
+        while self.rodando:            
             dt = self.clock.tick(60)/1000.0
-
             mouse_pos = pygame.mouse.get_pos()
             clicou = False
-
             eventos = pygame.event.get()
 
             for evento in eventos:
@@ -48,7 +42,6 @@ class Jogo:
             self.estado_atual.processar_eventos(eventos, teclas, mouse_pos, clicou)
             self.estado_atual.atualizar(dt)
             self.estado_atual.desenhar(self.tela)
-
             pygame.display.flip()
 
         pygame.quit()

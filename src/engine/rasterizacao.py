@@ -7,14 +7,11 @@ def setPixel(superficie, x, y, color):
     if 0 <= x < superficie.get_width() and 0 <= y < superficie.get_height():
         superficie.set_at((x, y), color)
 
-
 #==============================================
 # Reta
 #==============================================
 def bresenham(superficie, x0, y0, x1, y1, cor):
-
     x0, y0, x1, y1 = int(x0), int(y0), int(x1), int(y1)
-
     inclinada = abs(y1 -y0) > abs(x1 - x0)  # calcula se a reta é íngreme ou mais horizontal
 
     if inclinada:         # troca as coordenadas para poder trabalhar com a reta mais vertical
@@ -28,9 +25,7 @@ def bresenham(superficie, x0, y0, x1, y1, cor):
     # variações em x e y
     dx = x1 - x0
     dy = abs(y1 - y0)
-
     y_passo = 1 if y0 < y1 else -1  # decidir para qual direção y deve caminhar
-
     d = 2 * dy - dx         # erro/acumulador de decisão
     y = y0          # começa no ponto inicial
 
@@ -49,7 +44,6 @@ def bresenham(superficie, x0, y0, x1, y1, cor):
 
 def desenhar_linha(superficie, x0, y0, x1, y1, cor):
     bresenham(superficie, x0, y0, x1, y1, cor)
-
 
 #==============================================
 # Círculo
@@ -75,7 +69,6 @@ def desenhar_circulo(superficie, xc, yc, r, cor):
         setPixel(superficie, cx - py, cy - px, c)
 
     desenhar_octantes(xc, yc, x, y, cor)    # no primeiro ponto (0,r)
-
     # enquanto estamos na região do círculo, # avançamos horizontalmente
     while x < y:
         x += 1          
@@ -86,7 +79,6 @@ def desenhar_circulo(superficie, xc, yc, r, cor):
             d += 2 * (x - y) + 1
 
         desenhar_octantes(xc, yc, x, y, cor)
-
 
 #==============================================
 # Elipse
@@ -108,14 +100,12 @@ def desenhar_elipse(superficie, xc, yc, rx, ry, cor):
         setPixel(superficie, cx - px, cy - py, c)
 
     # a elipse tem regiões onde a curva muda de comportamento
-
     # região 1
     # parâmetro de decisão da primeira região
     d1 = (ry ** 2) - (rx ** 2 * ry) + (0.25 * rx ** 2)
     # controlam a mudança da inclinação
     dx = 2 * (ry ** 2) * x
     dy = 2 * (rx ** 2) * y
-
     while dx < dy:      # enquanto continuamos na primeira região
         desenhar_quadrantes(xc, yc, x, y, cor)    # desenha os quatros pixels
         x += 1          # avança horizontalmente
@@ -128,7 +118,7 @@ def desenhar_elipse(superficie, xc, yc, rx, ry, cor):
             y -= 1
             dy -= 2 * (rx ** 2)
             d1 += dx - dy + (ry ** 2)
-
+    
     # região 2
      # parâmetro de decisão da segunda região
     d2 = ((ry ** 2) * ((x + 0.5) ** 2)) + ((rx ** 2) * ((y - 1) ** 2)) - ((rx ** 2) * (ry ** 2))
@@ -137,7 +127,6 @@ def desenhar_elipse(superficie, xc, yc, rx, ry, cor):
         desenhar_quadrantes(xc, yc, x, y, cor)    # desenhamos
         y -= 1      # avançamos verticalmente
         dy -= 2 * (rx ** 2) # atualiza dy
-
         # decidi se mantém ou muda o x
         if d2 > 0:
             d2 += (rx ** 2) - dy
@@ -146,57 +135,63 @@ def desenhar_elipse(superficie, xc, yc, rx, ry, cor):
             dx += 2 * (ry ** 2)
             d2 += dx - dy + (rx ** 2)
 
-
 #==============================================
-# Flood fill
+# Boundary fill
 #==============================================
-def flood_fill(superficie, x_inicio, y_inicio, cor_preenchimento):
-    
+def boundary_fill(superficie, x_inicio, y_inicio, cor_preenchimento, cor_borda):
     x_inicio = int(x_inicio)
     y_inicio = int(y_inicio)
 
-    # pega o tamanho da tela
+    # Pega o tamanho da tela
     largura = superficie.get_width()
     altura = superficie.get_height()
 
-    if not (0 <= x_inicio < largura and 0 <= y_inicio < altura):    # se o ponto estiver fora, ignora
+    # Se o ponto inicial estiver fora da tela, ignora
+    if not (0 <= x_inicio < largura and 0 <= y_inicio < altura):
         return
 
-    cor_alvo = superficie.get_at((x_inicio, y_inicio))[:3]
-    cor_preenchimento_rgb = cor_preenchimento[:3]   # pega as "coordenadas" do rgb
+    cor_preenchimento_rgb = cor_preenchimento[:3]
+    cor_borda_rgb = cor_borda[:3]
 
-    if cor_alvo == cor_preenchimento_rgb:
-        return
-
+    # Pilha para armazenar os pontos a serem visitados (LIFO)
     pilha = [(x_inicio, y_inicio)]
+    
+    # Conjunto para rastrear pixels já visitados nesta execução e evitar loops infinitos
+    visitados = set()
 
-    while pilha:        # enquanto existirem pontos para analisar, continua o flood fill
-        x, y = pilha.pop()    # remove o último elemento da pilha (LIFO = last in, first out)
-
+    while pilha:
+        x, y = pilha.pop()
+        # Verifica os limites da tela
         if 0 <= x < largura and 0 <= y < altura:
-            if superficie.get_at((x, y))[:3] == cor_alvo:
+            # Se já visitamos esse pixel nesta rodada, pula para o próximo
+            if (x, y) in visitados:
+                continue
+                
+            cor_atual = superficie.get_at((x, y))[:3]
+            # CONDIÇÃO DO BOUNDARY FILL: 
+            # Só pinta se a cor atual NÃO FOR a borda E NÃO FOR a cor de preenchimento
+            if cor_atual != cor_borda_rgb and cor_atual != cor_preenchimento_rgb:
                 setPixel(superficie, x, y, cor_preenchimento)
-                # adiciona os 4 vizinhos
+                # Marca como visitado para a pilha não avaliar o mesmo pixel repetidas vezes
+                visitados.add((x, y))
+                # Adiciona os 4 vizinhos na pilha
                 pilha.append((x + 1, y))
                 pilha.append((x - 1, y))
                 pilha.append((x, y + 1))
                 pilha.append((x, y - 1))
-
 
 #==============================================
 # Scanline
 #==============================================
 
 # preenchimento scanline para polígonos com uma única cor
-def scanline_fill(superficie, pontos, cor):
-    
+def scanline_fill(superficie, pontos, cor):    
     if len(pontos) < 3:     # um polígono tem no mínimo três pontos
         return
 
     ys = [p[1] for p in pontos]    #pega todos os y dos pontos
     y_min = max(0, int(min(ys)))        # pega o menor y, converte para inteiro e garante que não seja menor que 0
     y_max = min(superficie.get_height() - 1, int(max(ys)))        # pega o maior y e garante que não passe da altura da tela
-
     n = len(pontos)
 
     for y in range(y_min, y_max + 1):   # percorre o y mínimo até o máximo
@@ -204,7 +199,6 @@ def scanline_fill(superficie, pontos, cor):
         intersecoes = []      # vai guardar os valores de x, onde o scanline cruza as bordas
 
         for i in range(n):      # percorre as arestas
-
             x0, y0 = pontos[i]
             x1, y1 = pontos[(i + 1) % n]    # precisa do operador resto, para fecharmos o polígono
 
@@ -223,82 +217,76 @@ def scanline_fill(superficie, pontos, cor):
         intersecoes.sort()    # organiza as interseções, porque vamos trabalhar em pares
 
         for i in range(0, len(intersecoes), 2):   # percorre de dois em dois
-
             if i + 1 < len(intersecoes):  # garante que existe um segundo elemento
-
                 # converte as interseções para inteiros
                 x_inicio = int(intersecoes[i])
                 x_fim = int(intersecoes[i + 1])
-
                 # encontrou esquerda, encontrou direita, então preenche todos os pontos entre elas
                 for x in range(x_inicio, x_fim + 1):
                     setPixel(superficie, x, y, cor)
 
 # Função auxiliar de interpolação
-def interpolaCor(cor1, cor2, t):
-    # Interpolação linear entre duas cores RGB
-    r = int(cor1[0] + (cor2[0] - cor1[0]) * t)
-    g = int(cor1[1] + (cor2[1] - cor1[1]) * t)
-    b = int(cor1[2] + (cor2[2] - cor1[2]) * t)
-    return (max(0, min(255, r)), max(0, min(255, g)), max(0, min(255, b)))
+def interpola_cor(c1, c2, t):
+    r = int(c1[0] + (c2[0]-c1[0])*t)
+    g = int(c1[1] + (c2[1]-c1[1])*t)
+    b = int(c1[2] + (c2[2]-c1[2])*t)
 
-def scanline_fill_gradiente(superficie, pontos_com_cor):
+    r = max(0, min(r, 255))
+    g = max(0, min(g, 255))
+    b = max(0, min(b, 255))
+    
+    return (r, g, b)
 
-    if len(pontos_com_cor) < 3:     
-        return
+def scanline_fill_gradiente(superficie, pontos, cores):
 
-    ys = [p[0][1] for p in pontos_com_cor]
-    y_min = max(0, int(min(ys)))
-    y_max = min(superficie.get_height() - 1, int(max(ys)))
-    n = len(pontos_com_cor)
+    if len(pontos) < 3:     
+            return
+    
+    ys = [p[1] for p in pontos]
+    y_min = int(min(ys))
+    y_max = int(max(ys))
+    n = len(pontos)
 
-    for y in range(y_min, y_max + 1):
+    for y in range(y_min, y_max):
         intersecoes = []
-
         for i in range(n):
-            (x0, y0), cor0 = pontos_com_cor[i]
-            (x1, y1), cor1 = pontos_com_cor[(i + 1) % n]
+            x0, y0 = pontos[i]
+            x1, y1 = pontos[(i + 1) % n]
+
+            c0 = cores[i]
+            c1 = cores[(i + 1) % n]
 
             if y0 == y1:
                 continue
 
             if y0 > y1:
                 x0, y0, x1, y1 = x1, y1, x0, y0
-                cor0, cor1 = cor1, cor0
+                c0, c1 = c1, c0
 
             if y < y0 or y >= y1:
                 continue
-            # até aqui usou o mesmo processo do scanline normal, implementado anteriormente
-            
-            t = (y - y0) / (y1 - y0)    # parâmetro que indica a posição relativa entre os dois vértices (varia entre o início(0) e fim(1) da aresta)
-            x = x0 + t * (x1 - x0)      # encontra o x correspondente ao y
-            
-            # Interpolação RGB na aresta
-            cor_interpolada = interpolaCor(cor0, cor1, t)
-            
-            intersecoes.append((x, cor_interpolada)) # adiciona à interseção
 
-        intersecoes.sort(key=lambda item: item[0])  # ordena pela primeira coordenada da interseção
+            t = (y - y0) / (y1 - y0)
+            x = x0 + t * (x1 - x0)
+            cor_y = interpola_cor(c0, c1, t)
+            intersecoes.append((x, cor_y))
 
-        # mesma lógica usada no scanline normal, com algumas mudanças que estão anotadas
+        intersecoes.sort(key=lambda i: i[0])
+
         for i in range(0, len(intersecoes), 2):
             if i + 1 < len(intersecoes):
-
-                # pega as duas extremidades
-                x_inicio, cor_inicio = intersecoes[i]
+                x_ini, cor_ini = intersecoes[i]
                 x_fim, cor_fim = intersecoes[i + 1]
 
-                xi = int(round(x_inicio))
-                xf = int(round(x_fim))
+                if x_fim == x_ini:
+                    continue
 
-                largura_segmento = x_fim - x_inicio    # distância horizontal entre as duas interseções
+                for x in range(int(x_ini), int(x_fim) + 1):
+                    t = (x - x_ini) / (x_fim - x_ini)
+                    cor = interpola_cor(cor_ini, cor_fim, t)
+                    setPixel(superficie, x, y, cor)
 
-                for x in range(xi, xf + 1):
-                    t_x = 0.0 if largura_segmento == 0 else (x - x_inicio) / largura_segmento
-                    cor_pixel = interpolaCor(cor_inicio, cor_fim, t_x)
-                    setPixel(superficie, x, y, cor_pixel)
-
-def scanline_textura(superficie, vertices_texturizados, imagem_textura):
+def scanline_textura(superficie, vertices_texturizados, imagem_textura, usar_alpha=False):
     if len(vertices_texturizados) < 3:
         return
 
@@ -310,9 +298,7 @@ def scanline_textura(superficie, vertices_texturizados, imagem_textura):
     ys = [p[0][1] for p in vertices_texturizados]
     y_min = max(0, int(min(ys)))
     y_max = min(h_sup - 1, int(max(ys)))
-
     n = len(vertices_texturizados)
-
     # Acesso direto à matriz de pixels da imagem e da tela (Permitido pelo edital)
     px_dst = pygame.PixelArray(superficie)
     px_src = pygame.PixelArray(imagem_textura)
@@ -368,9 +354,30 @@ def scanline_textura(superficie, vertices_texturizados, imagem_textura):
                     if ty < 0: ty = 0
                     elif ty >= altura_tex: ty = altura_tex - 1
 
-                    # Atribuição direta de pixel via matriz em memória
-                    px_dst[x, y] = px_src[tx, ty]
+                    # 1. Lê o pixel atual da textura
+                    cor_inteira = px_src[tx, ty]
 
+                    r, g, b, a = imagem_textura.unmap_rgb(
+                        cor_inteira
+                    )
+                    # =====================================================
+                    # TEXTURA COM TRANSPARÊNCIA
+                    # =====================================================
+                    if usar_alpha:
+
+                        # Pixel totalmente transparente
+                        if a == 0:
+                            continue
+
+                        # Pixel visível
+                        px_dst[x, y] = cor_inteira
+                    # =====================================================
+                    # TEXTURA NORMAL
+                    # =====================================================
+                    else:
+
+                        px_dst[x, y] = cor_inteira
+                        
     # Libera o bloqueio das superfícies na memória
     del px_dst
     del px_src

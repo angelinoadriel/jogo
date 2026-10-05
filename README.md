@@ -2,11 +2,11 @@
 
 ## 📖 Enredo / História
 
-Hoje é o dia mais importante da sua carreira: a apresentação decisiva da sua vida no prédio NC2A! Ele passou meses preparando relatórios, pastas e documentos impecáveis. 
+Hoje é o dia mais importante da sua carreira: a apresentação decisiva da sua vida no prédio central da faculdade! Ele passou meses preparando relatórios, pastas e documentos impecáveis. 
 
 Porém, ao chegar ansioso na entrada do prédio, o desastre acontece: Ele escorrega feio, sua pasta voa e todos os papéis da reunião começam a cair lentamente pelo ar. Para piorar a situação, acima dele está uma colônia de pombos que decidiram bombardear o local exatamente nesse momento!
 
-Agora, Ele precisa correr contra o tempo, movimentando-se de um lado para o outro para **resgatar as pastas cruciais** antes que caiam no chão sujo, enquanto se esquiva agilmente dos **cocôs dos pombos**. Se Ele se sujar demais, não poderá entrar na reunião!
+Agora, Ele precisa correr contra o tempo, movimentando-se de um lado para o outro para **resgatar as pastas cruciais** antes que caiam no chão sujo, enquanto se esquiva agilmente dos **cocôs dos pombos**. Se Ele se sujar demais, não poderá fazer a apresentação!
 
 ---
 
