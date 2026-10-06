@@ -2,8 +2,8 @@
 DENTRO = 0  # 0000
 ESQUERDA = 1 # 0001
 DIREITA = 2  # 0010
-INFERIOR = 4 # 0100
-SUPERIOR = 8 # 1000
+SUPERIOR = 4 # 0100
+INFERIOR = 8 # 1000
 
 def _calcular_codigo_regiao(x, y, x_min, y_min, x_max, y_max):
     codigo = DENTRO
@@ -13,9 +13,9 @@ def _calcular_codigo_regiao(x, y, x_min, y_min, x_max, y_max):
         codigo |= DIREITA
 
     if y < y_min:
-        codigo |= INFERIOR
-    elif y > y_max:
         codigo |= SUPERIOR
+    elif y > y_max:
+        codigo |= INFERIOR
 
     return codigo
 
@@ -41,11 +41,11 @@ def cohen_sutherland(x0, y0, x1, y1, x_min, y_min, x_max, y_max):
 
             # descobre qual borda da janela será atravessada e faz o devido cálculo para saber o x e y
             if codigo_fora & SUPERIOR:
-                x = x0 + (x1 - x0) * (y_max - y0) / (y1 - y0)
-                y = y_max
-            elif codigo_fora & INFERIOR:
                 x = x0 + (x1 - x0) * (y_min - y0) / (y1 - y0)
                 y = y_min
+            elif codigo_fora & INFERIOR:
+                x = x0 + (x1 - x0) * (y_max - y0) / (y1 - y0)
+                y = y_max
             elif codigo_fora & DIREITA:
                 y = y0 + (y1 - y0) * (x_max - x0) / (x1 - x0)
                 x = x_max

@@ -22,6 +22,10 @@ def escala(sx, sy):
     ]
 
 def rotacao(angulo_rad):
+    """
+    Cria uma matriz de rotação.
+    O ângulo deve ser informado em radianos.
+    """
     cos = math.cos(angulo_rad)
     sen = math.sin(angulo_rad)
     return [
@@ -56,19 +60,3 @@ def aplica_transformacao(M, pontos):
         )
         novos_pontos.append((x_novo, y_novo))
     return novos_pontos
-
-# aplica rotação alfa à matriz de transformação C (rotaciona em torno da posição atual).
-def rotacionar(C, alfa):
-    R = rotacao(alfa)
-    # posição atual (tx, ty)
-    tx = C[0][2]
-    ty = C[1][2]
-    T = translacao(-tx, -ty)
-    T_inv = translacao(tx, ty)
-    return multiplica_matrizes(
-        T_inv,
-        multiplica_matrizes(
-            R,
-            multiplica_matrizes(T, C)
-        )
-    )

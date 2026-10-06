@@ -1,5 +1,3 @@
-import pygame
-
 # desenha um pixel com verificação de limites
 def setPixel(superficie, x, y, color):
     x = int(x)
@@ -285,102 +283,6 @@ def scanline_fill_gradiente(superficie, pontos, cores):
                     t = (x - x_ini) / (x_fim - x_ini)
                     cor = interpola_cor(cor_ini, cor_fim, t)
                     setPixel(superficie, x, y, cor)
-
-def scanline_textura(superficie, vertices_texturizados, imagem_textura, usar_alpha=False):
-    if len(vertices_texturizados) < 3:
-        return
-
-    largura_tex = imagem_textura.get_width()
-    altura_tex = imagem_textura.get_height()
-    w_sup = superficie.get_width()
-    h_sup = superficie.get_height()
-
-    ys = [p[0][1] for p in vertices_texturizados]
-    y_min = max(0, int(min(ys)))
-    y_max = min(h_sup - 1, int(max(ys)))
-    n = len(vertices_texturizados)
-    # Acesso direto à matriz de pixels da imagem e da tela (Permitido pelo edital)
-    px_dst = pygame.PixelArray(superficie)
-    px_src = pygame.PixelArray(imagem_textura)
-
-    for y in range(y_min, y_max + 1):
-        intersecoes = []
-        for i in range(n):
-            (x0, y0), (u0, v0) = vertices_texturizados[i]
-            (x1, y1), (u1, v1) = vertices_texturizados[(i + 1) % n]
-
-            if y0 == y1:
-                continue
-            if y0 > y1:
-                x0, y0, x1, y1 = x1, y1, x0, y0
-                u0, v0, u1, v1 = u1, v1, u0, v0
-
-            if y < y0 or y >= y1:
-                continue
-
-            t = (y - y0) / (y1 - y0)
-            x = x0 + t * (x1 - x0)
-            u = u0 + t * (u1 - u0)
-            v = v0 + t * (v1 - v0)
-            intersecoes.append((x, u, v))
-
-        intersecoes.sort(key=lambda item: item[0])
-
-        for i in range(0, len(intersecoes), 2):
-            if i + 1 < len(intersecoes):
-                x_inicio, u_inicio, v_inicio = intersecoes[i]
-                x_fim, u_fim, v_fim = intersecoes[i + 1]
-
-                xi = max(0, int(x_inicio))
-                xf = min(w_sup - 1, int(x_fim))
-
-                largura_segmento = x_fim - x_inicio
-                if largura_segmento <= 0:
-                    continue
-
-                inv_largura = 1.0 / largura_segmento
-
-                for x in range(xi, xf + 1):
-                    t_x = (x - x_inicio) * inv_largura
-                    u_pixel = u_inicio + t_x * (u_fim - u_inicio)
-                    v_pixel = v_inicio + t_x * (v_fim - v_inicio)
-
-                    tx = int(u_pixel * (largura_tex - 1))
-                    ty = int(v_pixel * (altura_tex - 1))
-
-                    # Mantém as coordenadas dentro da textura
-                    if tx < 0: tx = 0
-                    elif tx >= largura_tex: tx = largura_tex - 1
-                    if ty < 0: ty = 0
-                    elif ty >= altura_tex: ty = altura_tex - 1
-
-                    # 1. Lê o pixel atual da textura
-                    cor_inteira = px_src[tx, ty]
-
-                    r, g, b, a = imagem_textura.unmap_rgb(
-                        cor_inteira
-                    )
-                    # =====================================================
-                    # TEXTURA COM TRANSPARÊNCIA
-                    # =====================================================
-                    if usar_alpha:
-
-                        # Pixel totalmente transparente
-                        if a == 0:
-                            continue
-
-                        # Pixel visível
-                        px_dst[x, y] = cor_inteira
-                    # =====================================================
-                    # TEXTURA NORMAL
-                    # =====================================================
-                    else:
-
-                        px_dst[x, y] = cor_inteira
-                        
-    # Libera o bloqueio das superfícies na memória
-    del px_dst
-    del px_src
 
 #==============================================
 # Desenhar polígono
