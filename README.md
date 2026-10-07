@@ -14,9 +14,7 @@ O projeto foi desenvolvido com foco na implementação manual dos principais con
 
 Assista ao jogo em execução:
 
-**[ADICIONE AQUI O LINK DO VÍDEO]**
-
-> Antes da entrega, substitua o texto acima pelo link do vídeo publicado no GitHub, YouTube ou outro serviço utilizado pela equipe.
+https://youtu.be/AuTNyrZsqW8
 
 ---
 

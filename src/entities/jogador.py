@@ -37,6 +37,8 @@ class Jogador(Entidade):
         # O jogador usa textura, portanto não desenha borda.
         self.cor_borda = None
 
+        self.cor_minimapa = Cores.MINIMAPA_JOGADOR
+
         # =================================================
         # MOVIMENTO
         # =================================================

@@ -31,7 +31,11 @@ class Entidade:
         # APARÊNCIA
         # =================================================
         self.cor = cor
+
         self.cor_borda = Cores.PRETO
+
+        # Cor usada para representar a entidade no minimapa
+        self.cor_minimapa = Cores.BRANCO
 
         # =================================================
         # TRANSFORMAÇÃO

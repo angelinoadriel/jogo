@@ -40,6 +40,8 @@ class Pasta(Entidade):
 
         super().__init__(pontos_visuais, Cores.BORDA_PASTA, pontos_colisao)
 
+        self.cor_minimapa = Cores.MINIMAPA_COCO
+
         # =================================================
         # TEXTURA
         # =================================================

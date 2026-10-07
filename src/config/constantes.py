@@ -135,3 +135,19 @@ MINIMAPA_VIEWPORT = (
     180,
     140
 )
+# =========================================================
+# CONFIGURAÇÕES DO MINIMAPA
+# =========================================================
+# Zoom 1.0 mostra o mundo inteiro (professor + tudo que está caindo).
+# Valores maiores aproximam a câmera e ela passa a seguir o professor.
+MINIMAPA_ZOOM_INICIAL = 1.0
+MINIMAPA_VIEWPORT = (
+    20,
+    20,
+    220,
+    170
+)
+
+# Objetos menores que isso (em pixels no minimapa) não recebem contorno,
+# senão a borda "come" a cor do preenchimento.
+MINIMAPA_TAMANHO_MIN_CONTORNO = 8

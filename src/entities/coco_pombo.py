@@ -29,6 +29,8 @@ class CocoPombo(Entidade):
 
         super().__init__(pontos_visuais, Cores.BRANCO, pontos_colisao)
 
+        self.cor_minimapa = Cores.MINIMAPA_COCO
+
         # =================================================
         # TEXTURA
         # =================================================
