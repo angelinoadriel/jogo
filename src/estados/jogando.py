@@ -1,5 +1,6 @@
 import pygame
 import random
+import time
 
 from config.constantes import (
     MAX_PASTAS_FASE,
@@ -282,21 +283,37 @@ class EstadoJogando(Estado):
 
 
     def desenhar(self, tela):
+        tempo_inicio = time.perf_counter()
+
         # Fundo
         tela.blit(self.buffer_fundo, (0, 0))
+        tempo_depois_fundo = time.perf_counter()
 
         # Jogador
         self.jogador.desenhar(tela)
+        tempo_depois_jogador = time.perf_counter()
 
         # Objetos
         for obj in self.objetos_caindo:
             obj.desenhar(tela)
+        tempo_depois_objetos = time.perf_counter()
 
         # HUD
         self.hud.desenhar(tela, self.vidas, self.vidas_maximas, self.pastas_coletadas, self.max_pastas_fase)
+        tempo_depois_hud = time.perf_counter()
 
         # Minimapa
         self.minimapa.desenhar(tela, self.jogador, self.objetos_caindo)
+        tempo_depois_minimapa = time.perf_counter()
 
         # Colisões
         self.desenhar_colisoes(tela)
+
+        # ---- Mostra os tempos em milissegundos ----
+        print(
+            f"fundo: {(tempo_depois_fundo - tempo_inicio) * 1000:.1f} ms | "
+            f"jogador: {(tempo_depois_jogador - tempo_depois_fundo) * 1000:.1f} ms | "
+            f"objetos: {(tempo_depois_objetos - tempo_depois_jogador) * 1000:.1f} ms | "
+            f"hud: {(tempo_depois_hud - tempo_depois_objetos) * 1000:.1f} ms | "
+            f"minimapa: {(tempo_depois_minimapa - tempo_depois_hud) * 1000:.1f} ms"
+        )

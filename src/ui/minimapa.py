@@ -1,3 +1,4 @@
+import pygame
 from config.constantes import (
     MINIMAPA_ZOOM_INICIAL,
     MINIMAPA_VIEWPORT
@@ -36,6 +37,31 @@ class MiniMapa:
         # FONTE
         # =================================================
         self.fonte = (jogo.recursos.carregar_fonte(FONTE_PRINCIPAL, 24))
+
+        
+        # ---- Monta a moldura uma vez só ----
+        (xv_min, yv_min, xv_max, yv_max) = self.viewport
+
+        largura_caixa = int(xv_max - xv_min) + 1
+        altura_caixa = int(yv_max - yv_min) + 1
+
+        self.superficie_moldura = pygame.Surface((largura_caixa, altura_caixa))
+
+        pontos_locais = [
+            (0, 0),
+            (largura_caixa - 1, 0),
+            (largura_caixa - 1, altura_caixa - 1),
+            (0, altura_caixa - 1)
+        ]
+
+        scanline_fill(self.superficie_moldura, pontos_locais, Cores.MINIMAPA_FUNDO)
+        desenhar_poligono(self.superficie_moldura, pontos_locais, Cores.MINIMAPA_BORDA)
+
+        # ---- Monta o texto uma vez só ----
+        mensagem_zoom = f"Zoom: {self.zoom:.1f}x"
+        self.texto_zoom = self.fonte.render(mensagem_zoom, True, Cores.MINIMAPA_TEXTO)
+        self.texto_zoom_sombra = self.fonte.render(mensagem_zoom, True, (0, 0, 0))
+
 
 
     # =====================================================
@@ -92,17 +118,9 @@ class MiniMapa:
 
         (xv_min, yv_min, xv_max, yv_max) = self.viewport
 
-        pontos = [
-            (xv_min, yv_min),
-            (xv_max, yv_min),
-            (xv_max, yv_max),
-            (xv_min, yv_max)
-        ]
-        scanline_fill(tela, pontos, Cores.MINIMAPA_FUNDO)
-        desenhar_poligono(tela, pontos, Cores.MINIMAPA_BORDA)
-        texto = self.fonte.render(f"Zoom: {self.zoom:.1f}x", True, Cores.MINIMAPA_TEXTO)
-        tela.blit(texto, (xv_min + 5, yv_max + 5))
-
+        tela.blit(self.superficie_moldura, (xv_min, yv_min))
+        tela.blit(self.texto_zoom_sombra, (xv_min + 7, yv_max + 7))
+        tela.blit(self.texto_zoom, (xv_min + 5, yv_max + 5))
 
     # =====================================================
     # TRANSFORMAÇÃO DE UMA ENTIDADE
