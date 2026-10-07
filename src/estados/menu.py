@@ -27,7 +27,7 @@ class EstadoMenu(Estado):
         # FONTES
         # -------------------------------------------------
         self.fonte_botoes = (self.jogo.recursos.carregar_fonte(FONTE_PRINCIPAL, 26))
-        self.fonte_titulo = (self.jogo.recursos.carregar_fonte(FONTE_PRINCIPAL, 45))
+        self.fonte_titulo = (self.jogo.recursos.carregar_fonte(FONTE_PRINCIPAL, 28))
         
         # -------------------------------------------------
         # OPÇÕES
@@ -108,7 +108,7 @@ class EstadoMenu(Estado):
         # TÍTULO
         # =================================================
         titulo = self.fonte_titulo.render(NOME_JOGO, True, Cores.BRANCO)
-        tela.blit(titulo, (self.jogo.largura // 2 - titulo.get_width() // 2, 150))
+        tela.blit(titulo, (self.jogo.largura // 2 - titulo.get_width() // 2, 175))
 
         # =================================================
         # BOTÕES

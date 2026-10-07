@@ -40,7 +40,7 @@ class Pasta(Entidade):
 
         super().__init__(pontos_visuais, Cores.BORDA_PASTA, pontos_colisao)
 
-        self.cor_minimapa = Cores.MINIMAPA_COCO
+        self.cor_minimapa = Cores.MINIMAPA_PASTA
 
         # =================================================
         # TEXTURA
@@ -51,7 +51,7 @@ class Pasta(Entidade):
         # TRANSFORMAÇÕES
         # =================================================
         self.angulo = 0.0
-        self.fator_escala = 1.0
+        self.fator_escala = 0.8
 
         # Velocidade angular em radianos por segundo
         self.velocidade_rotacao = PASTA_VELOCIDADE_ROTACAO

@@ -1,7 +1,7 @@
 
 
-NOME_JOGO = "Nome do jogo"
-NOME_JANELA = "Nome da janela"
+NOME_JOGO = "Guerra dos Pombos: O Resgate das Pastas"
+NOME_JANELA = "Guerra dos Pombos: O Resgate das Pastas"
 
 
 # =========================================================
@@ -40,36 +40,27 @@ TXT_DE_HISTORIA_MANUAL = (
             "HISTÓRIA\n\n"
 
             "Hoje é o dia mais importante da sua carreira: "
-            "a apresentação decisiva da sua vida no prédio central "
+            "a reunião para decidir seu futuro na universidade "
+            "está para começar no prédio central "
             "da faculdade!\n\n"
 
-            "Ele passou meses preparando relatórios, pastas e "
+            "Matheus passou meses preparando relatórios, pastas e "
             "documentos impecáveis.\n\n"
 
-            "Porém, ao chegar ansioso à entrada do prédio, o desastre "
-            "acontece. Ele escorrega feio, sua pasta voa e todos os "
-            "papéis da reunião começam a cair lentamente pelo ar.\n\n"
+            "Porém, atrasado para à reunião, logo quando chegou "
+            "na entrada do prédio, ele escorregou e suas pastas "
+            "voaram para todos os lados.\n\n"
 
-            "Para piorar a situação, acima dele está uma colônia de "
-            "pombos que decidiu bombardear o local exatamente nesse "
-            "momento!\n\n"
+            "Para piorar a situação, acima de Matheus estão muitos"
+            "pombos que com raiva decidiram bombardear o local "
+            "exatamente nesse momento!\n\n"
 
-            "Agora, Ele precisa correr contra o tempo, movimentando-se "
-            "de um lado para o outro para resgatar as pastas cruciais "
-            "antes que caiam no chão sujo, enquanto se esquiva "
-            "agilmente dos cocôs dos pombos.\n\n"
-
-            "Se Ele se sujar demais, não poderá fazer a apresentação.\n\n\n"
+            "Agora, Matheus precisa pegar o máximo de pastas que estão caíndo "
+            "e não se sujar muito para conseguir participar da reunião.\n\n\n"
 
             "MANUAL\n\n"
 
-            "OBJETIVO\n\n"
-
-            "Recupere a quantidade necessária de pastas sem perder "
-            "todas as suas vidas.\n\n"
-
-            "CONTROLES\n\n"
-
+            "CONTROLES:\n"
             "A / SETA ESQUERDA - mover para a esquerda\n"
             "D / SETA DIREITA - mover para a direita\n"
             "F3 - mostrar caixas de colisões\n"
@@ -125,16 +116,7 @@ HUD_BARRA_ALTURA = 10
 HUD_FPS_MARGEM_X = 5
 HUD_FPS_MARGEM_Y = 5
 
-# =========================================================
-# CONFIGURAÇÕES DO MINIMAPA
-# =========================================================
-MINIMAPA_ZOOM_INICIAL = 1.5
-MINIMAPA_VIEWPORT = (
-    20,
-    20,
-    180,
-    140
-)
+
 # =========================================================
 # CONFIGURAÇÕES DO MINIMAPA
 # =========================================================

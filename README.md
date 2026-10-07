@@ -1,10 +1,10 @@
-# Desastre no NC2A — Jogo Arcade 2D
+# Guerra dos Pombos: O Resgate das Pastas — Jogo Arcade 2D
 
 ## Visão geral
 
-**Desastre no NC2A** é um jogo Arcade 2D desenvolvido para a disciplina de **Computação Gráfica**.
+**Guerra dos Pombos: O Resgate das Pastas** é um jogo Arcade 2D desenvolvido para a disciplina de **Computação Gráfica**.
 
-O jogador controla um professor que precisa correr de um lado para o outro para **resgatar pastas que estão caindo** enquanto tenta **desviar dos cocôs lançados pelos pombos**.
+O jogador controla um professor que precisa correr de um lado para o outro para **resgatar pastas que estão caindo** enquanto tenta **desviar dos cocôs dos pombos**.
 
 O projeto foi desenvolvido com foco na implementação manual dos principais conceitos de Computação Gráfica estudados na disciplina, incluindo rasterização, preenchimento de regiões, transformações geométricas, animação, Window/Viewport, clipping e mapeamento de textura.
 
@@ -14,23 +14,23 @@ O projeto foi desenvolvido com foco na implementação manual dos principais con
 
 Assista ao jogo em execução:
 
-https://youtu.be/AuTNyrZsqW8
+
 
 ---
 
 ## Conceito do jogo
 
-O jogo apresenta uma situação caótica dentro da faculdade: o professor precisa recuperar documentos importantes para uma apresentação enquanto várias pastas caem do alto da tela.
+O jogo apresenta uma situação caótica dentro da faculdade: o professor precisa recuperar documentos/pastas importantes para uma reunião.
 
-Ao mesmo tempo, pombos sobrevoam o local e deixam cair cocôs que podem fazer o professor perder suas vidas.
+Ao mesmo tempo, pombos sobrevoam o local e deixam cair cocôs que podem fazer o professor se sujar e perder a reunião.
 
 O jogador precisa equilibrar **movimentação, coleta e desvio de obstáculos** para atingir a meta da dificuldade escolhida.
 
 ### Objetivo
 
-Recuperar a quantidade necessária de pastas antes do final da fase, sem perder todas as vidas.
+Recuperar a quantidade necessária de pastas (conforme a dificuldade) das trinta que vão cair do céu, sem sujar suas roupas (perder todas as vidas).
 
-A fase termina somente depois que as **30 pastas** previstas para a partida forem lançadas e todas tiverem saído do jogo.
+A partida termina somente depois que as **30 pastas** tiverem caído do céu.
 
 ### Dificuldades
 
@@ -69,11 +69,11 @@ O jogo possui um menu com:
 
 A interface é construída utilizando os próprios recursos de rasterização do projeto para os elementos geométricos.
 
-### Sistema de vidas
+### Sistema de vidas (camisas)
 
-Cada dificuldade possui uma quantidade diferente de vidas.
+Cada dificuldade possui uma quantidade diferente de camisas.
 
-Quando o professor é atingido por um coco de pombo, uma vida é perdida.
+Quando o professor é atingido por um coco de pombo, uma camisa é perdida.
 
 ### Sistema de progressão
 
