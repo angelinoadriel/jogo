@@ -11,12 +11,12 @@ from core.entrada import Entrada
 from cenario import CenarioMenu
 from estados import EstadoMenu
 
-
 class Jogo:
     
     # construtor
     def __init__(self, largura=LARGURA_TELA, altura=ALTURA_TELA):       # passa a largura e altura com valores fixos
         pygame.init()                                                   # inicializa o pygame
+                
         self.largura = largura
         self.altura = altura
 

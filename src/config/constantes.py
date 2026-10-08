@@ -51,7 +51,7 @@ TXT_DE_HISTORIA_MANUAL = (
             "na entrada do prédio, ele escorregou e suas pastas "
             "voaram para todos os lados.\n\n"
 
-            "Para piorar a situação, acima de Matheus estão muitos"
+            "Para piorar a situação, acima de Matheus estão muitos "
             "pombos que com raiva decidiram bombardear o local "
             "exatamente nesse momento!\n\n"
 

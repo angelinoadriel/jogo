@@ -15,7 +15,8 @@ from config.caminhos import (
     PAPEL_2,
     PROFESSOR_PARADO,
     professor_correndo,
-    CAMISA_VIDA
+    CAMISA_VIDA,
+    MUSICA_FUNDO
 )
 from config.dificuldades import DIFICULDADES
 from engine.rasterizacao import (
@@ -113,6 +114,11 @@ class EstadoJogando(Estado):
     def entrar(self):
         self.iniciar_partida()
 
+        pygame.mixer.music.load(MUSICA_FUNDO)
+        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.play(-1)
+
+
     def iniciar_partida(self):
 
         # =================================================
@@ -164,6 +170,7 @@ class EstadoJogando(Estado):
     def sair(self):
         self.jogador.vel_x = 0
         self.jogador.vel_y = 0
+        pygame.mixer.music.stop()
 
         
     # verifica qual a dificuldade escolhida, se não começa com 'normal'
