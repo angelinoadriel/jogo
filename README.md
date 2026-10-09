@@ -13,7 +13,7 @@ O projeto foi desenvolvido com foco na implementação manual dos principais con
 ## Vídeo de demonstração
 
 Assista ao jogo em execução:
-
+https://youtu.be/uXjrnimG6pg?feature=shared
 
 
 ---
